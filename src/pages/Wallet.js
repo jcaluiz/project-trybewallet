@@ -2,11 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import WalletForm from '../components/WalletForm';
+import { getCurrencyAPIThunk } from '../redux/actions';
 
 class Wallet extends React.Component {
+  componentDidMount() {
+    const { currency } = this.props;
+    currency();
+  }
+
   render() {
     const { email } = this.props;
-    console.log(email);
     return (
       <>
         <Header />
@@ -15,6 +21,8 @@ class Wallet extends React.Component {
         <p data-testid="total-field">0</p>
 
         <p data-testid="header-currency-field">BRL</p>
+
+        <WalletForm />
       </>
     );
   }
@@ -22,10 +30,15 @@ class Wallet extends React.Component {
 
 Wallet.propTypes = ({
   email: PropTypes.string.isRequired,
+  currency: PropTypes.func.isRequired,
 });
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
 });
 
-export default connect(mapStateToProps)(Wallet);
+const mapDispatchToProps = (dispatch) => ({
+  currency: () => dispatch(getCurrencyAPIThunk()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
