@@ -4,6 +4,10 @@ import getCurrencyAPI from '../../services/currencyAPI';
 export const LOGIN = 'LOGIN';
 export const CURRENCY_TYPE_ACTION = 'CURRENCY_TYPE_ACTION';
 export const CURRENCY_TYPE_ACTION_ERROR = 'CURRENCY_TYPE_ACTION_ERROR';
+export const EXPENSES_TYPE = 'EXPENSES_TYPE';
+export const EXCHANGE_TYPE_ACTION = 'EXCHANGE_TYPE_ACTION';
+export const EXCHANGE_TYPE_ACTION_ERROR = 'EXCHANGE_TYPE_ACTION_ERROR';
+export const TOTAL_EXPENSE_TYPE = 'TOTAL_EXPENSE_TYPE';
 
 export const loginAction = (email, password) => ({ type: LOGIN, email, password });
 
@@ -15,6 +19,16 @@ export const getCurrency = (payload) => ({
 export const getCurrencyError = (error) => ({
   type: CURRENCY_TYPE_ACTION_ERROR,
   error,
+});
+
+export const expensesAc = (expenses) => ({
+  type: EXPENSES_TYPE,
+  expenses,
+});
+
+export const getTotalExpense = (total) => ({
+  type: TOTAL_EXPENSE_TYPE,
+  total,
 });
 
 export const getCurrencyAPIThunk = () => async (dispatch) => {
