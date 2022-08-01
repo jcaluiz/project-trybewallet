@@ -11,7 +11,9 @@ class Login extends React.Component {
     passwordHabilityButton: false,
   }
 
-  habilityButton = ({ target: { name, value } }) => {
+  habilityButton = (event) => {
+    const { target: { name, value } } = event;
+    event.preventDefault();
     const valueLengthHability = 6;
 
     console.log(name);
@@ -68,7 +70,7 @@ class Login extends React.Component {
           />
         </label>
         <button
-          type="button"
+          type="submit"
           disabled={ !(emailHabilityButton && passwordHabilityButton) }
           onClick={ this.handleClick }
         >

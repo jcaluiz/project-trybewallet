@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
 import { getCurrencyAPIThunk } from '../redux/actions';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -23,6 +24,8 @@ class Wallet extends React.Component {
         <p data-testid="header-currency-field">BRL</p>
 
         <WalletForm />
+
+        <Table />
       </>
     );
   }

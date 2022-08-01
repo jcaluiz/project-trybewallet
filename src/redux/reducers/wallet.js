@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   errorExchange: '',
   total: 0,
   expenses: [],
+  currenciesDetails: [],
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -18,7 +19,8 @@ const wallet = (state = INITIAL_STATE, action) => {
   case CURRENCY_TYPE_ACTION:
     return {
       ...state,
-      currencies: action.payload,
+      currencies: Object.keys(action.payload).filter((currencyL) => currencyL !== 'USDT'),
+      currenciesDetails: action.payload,
     };
   case EXPENSES_TYPE:
     return {

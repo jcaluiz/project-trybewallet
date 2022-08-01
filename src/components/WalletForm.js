@@ -51,7 +51,7 @@ class WalletForm extends Component {
   getExchangeValue = () => {
     const { expenses } = this.state;
     expenses.filter((expense) => this.setState({ exchange: Object
-      .values(expense.exchangeRates)
+      .values(expenses[0].exchangeRates)
       .find((exchange) => expense.currency === exchange.code).ask }));
     this.setState({ exchangeValueHability: false, multiplicationWithExchange: true });
   }
@@ -60,8 +60,6 @@ class WalletForm extends Component {
     const { expenses, exchange } = this.state;
     const totalCalculo = expenses
       .map((expense) => expense.value * parseFloat(exchange));
-    console.log(exchange);
-    console.log(totalCalculo);
     this.setState((prevState) => ({
       multiplicationWithExchange: false,
       total: [...prevState.total, totalCalculo[totalCalculo.length - 1]],
@@ -107,8 +105,7 @@ class WalletForm extends Component {
       }],
       id: prevState.id + 1,
       value: '',
-      description: '',
-    }));
+      description: '' }));
     this.setState({ exchangeValueHability: true });
   }
 
@@ -164,7 +161,7 @@ class WalletForm extends Component {
             onChange={ (event) => this.handleChange(event) }
           >
             {
-              Object.keys(currencyList).filter((currencyL) => currencyL !== 'USDT')
+              currencyList
                 .map((currencyL, index) => (
                   <option key={ index }>{currencyL}</option>
                 ))
@@ -237,7 +234,7 @@ WalletForm.defaultProps = ({
 
 const mapStateToProps = (state) => ({
   currencyList: state.wallet.currencies,
-  exchangeRatesAction: state.wallet.currencies,
+  exchangeRatesAction: state.wallet.currenciesDetails,
 });
 
 const mapDispatchToProps = (dispatch) => ({
