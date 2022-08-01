@@ -30,22 +30,36 @@ class WalletForm extends Component {
   componentDidUpdate() {
     const {
       exchangeValueHability, multiplicationWithExchange,
-      sumTotalHability, totalHability, expenses } = this.state;
-    const { expensesAction, getCurrencyAPIThunkReq } = this.props;
+      sumTotalHability, totalHability, expenses, total } = this.state;
+    const { expensesAction, getCurrencyAPIThunkReq,
+      editExpenseHability, editTotal } = this.props;
+    if (editTotal !== undefined) {
+      this.handleEditTotalState(total.filter((e) => e !== Number(editTotal)));
+    }
+    if (editExpenseHability === true) { this.handleDeleteExpense(); }
     if (exchangeValueHability === true) {
       this.getExchangeValue();
       getCurrencyAPIThunkReq();
     }
-    if (multiplicationWithExchange === true) {
-      this.getMultiplicationWithExchange();
-    }
-    if (sumTotalHability === true) {
-      this.getExpenseTotal();
-    }
+    if (multiplicationWithExchange === true) { this.getMultiplicationWithExchange(); }
+    if (sumTotalHability === true) { this.getExpenseTotal(); }
     if (totalHability === true) {
       this.handleGetPropsTotal();
       expensesAction(expenses);
     }
+  }
+
+  handleEditTotalState = (valueProperty) => {
+    const { totalExpense } = this.props;
+    this.setState({ total: valueProperty });
+    const calculo = valueProperty.reduce((acc, curr) => acc + Number(curr), 0);
+    totalExpense(Number(calculo.toFixed(2)));
+    this.setState({ totalExpenseCalculator: Number(calculo.toFixed(2)) });
+  }
+
+  handleDeleteExpense = () => {
+    const { expensesStateRedux } = this.props;
+    this.setState({ expenses: expensesStateRedux });
   }
 
   getExchangeValue = () => {
@@ -58,18 +72,16 @@ class WalletForm extends Component {
 
   getMultiplicationWithExchange = () => {
     const { expenses, exchange } = this.state;
-    const totalCalculo = expenses
-      .map((expense) => expense.value * parseFloat(exchange));
-    this.setState((prevState) => ({
-      multiplicationWithExchange: false,
-      total: [...prevState.total, totalCalculo[totalCalculo.length - 1]],
+    const totalCalculo = expenses.map((expense) => expense.value * parseFloat(exchange));
+    this.setState((prevState) => ({ multiplicationWithExchange: false,
+      total: [...prevState.total, Number((totalCalculo[totalCalculo.length - 1])
+        .toFixed(2))],
       sumTotalHability: true,
     }));
   }
 
   getExpenseTotal = () => {
     const { total } = this.state;
-    console.log(total);
     const calculo = total.reduce((acc, curr) => acc + Number(curr), 0);
     this.setState({ totalExpenseCalculator: Number(calculo.toFixed(2)),
       sumTotalHability: false,
@@ -83,14 +95,11 @@ class WalletForm extends Component {
     this.setState({ totalHability: false });
   }
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
-  }
+  handleChange = ({ target: { name, value } }) => this.setState({ [name]: value });
 
   handleClick = () => {
     const { value, description, currency, method, tag, id } = this.state;
+    this.handleDeleteExpense();
 
     const { exchangeRatesAction } = this.props;
     this.setState((prevState) => ({
@@ -112,17 +121,9 @@ class WalletForm extends Component {
   render() {
     const { currencyList } = this.props;
     const {
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates,
+      value, description, currency, method, tag, exchangeRates,
     } = this.state;
     console.log(exchangeRates);
-    console.log(this.state);
-    console.log(currencyList);
-
     return (
       <form>
         <label htmlFor="value-input">
@@ -137,7 +138,6 @@ class WalletForm extends Component {
             onChange={ (event) => this.handleChange(event) }
           />
         </label>
-
         <label htmlFor="description-input">
           Descrição:
           {' '}
@@ -149,7 +149,6 @@ class WalletForm extends Component {
             onChange={ (event) => this.handleChange(event) }
           />
         </label>
-
         <label htmlFor="currency-input">
           Moeda:
           {' '}
@@ -168,7 +167,6 @@ class WalletForm extends Component {
             }
           </select>
         </label>
-
         <label htmlFor="method-input">
           Método de Pagamento:
           {' '}
@@ -207,7 +205,6 @@ class WalletForm extends Component {
           onClick={ this.handleClick }
         >
           Adicionar despesa
-
         </button>
       </form>
     );
@@ -215,26 +212,27 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = ({
-  currencyList: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
-  exchangeRatesAction: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
+  currencyList: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  exchangeRatesAction: PropTypes.oneOfType([PropTypes.object, PropTypes.array,
   ]).isRequired,
   totalExpense: PropTypes.func.isRequired,
   getCurrencyAPIThunkReq: PropTypes.func.isRequired,
   expensesAction: PropTypes.func.isRequired,
+  expensesStateRedux: PropTypes.arrayOf(PropTypes.object).isRequired,
+  editTotal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  editExpenseHability: PropTypes.bool,
 });
 
 WalletForm.defaultProps = ({
-  currencyList: {},
+  currencyList: {}, editTotal: undefined, editExpenseHability: false,
 });
 
 const mapStateToProps = (state) => ({
   currencyList: state.wallet.currencies,
   exchangeRatesAction: state.wallet.currenciesDetails,
+  expensesStateRedux: state.wallet.expenses,
+  editExpenseHability: state.wallet.editArrayExpenses,
+  editTotal: state.wallet.editTotal,
 });
 
 const mapDispatchToProps = (dispatch) => ({

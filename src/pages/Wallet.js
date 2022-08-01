@@ -19,7 +19,10 @@ class Wallet extends React.Component {
         <Header />
         <p data-testid="email-field">{email}</p>
 
-        <p data-testid="total-field">{totalExpense}</p>
+        <p data-testid="total-field">
+          {totalExpense === 0 ? Number(totalExpense)
+            .toFixed(2) : totalExpense}
+        </p>
 
         <p data-testid="header-currency-field">BRL</p>
 

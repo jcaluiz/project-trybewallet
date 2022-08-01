@@ -1,8 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { expensesAc as expensesActionProp, handleBtnDelete } from '../redux/actions';
 
 class Table extends Component {
+  state = {
+    habilityReloadExpense: false,
+  }
+
+  componentDidUpdate() {
+    const { editExpenseHability } = this.props;
+    const { habilityReloadExpense } = this.state;
+    editExpenseHability(habilityReloadExpense);
+  }
+
+  handleListExpense = (expense) => {
+    const { gastos, expenses, editExpenseHability } = this.props;
+
+    const numberOfDeleteTotalArray = gastos.map((gasto) => (Object
+      .values(gasto.exchangeRates)
+      .filter((exchange) => expense.currency === exchange.code
+        && exchange.codein !== 'BRLT')
+      .map((e) => Number(e.ask)) * Number(expense.value)).toFixed(2))[0];
+    console.log(numberOfDeleteTotalArray);
+    editExpenseHability(null, numberOfDeleteTotalArray);
+    expenses(gastos.filter((gasto) => gasto !== expense));
+    this.setState({ habilityReloadExpense: true });
+    this.setState({ habilityReloadExpense: false });
+  }
+
   render() {
     const { gastos } = this.props;
     console.log(gastos.map((gasto) => gasto.value));
@@ -49,7 +75,16 @@ class Table extends Component {
 
               </td>
               <td>Real</td>
-              <td><button type="button" data-testid="delete-btn">Excluir</button></td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.handleListExpense(gasto) }
+                >
+                  Excluir
+                </button>
+
+              </td>
             </tr>
 
           </tbody>
@@ -62,10 +97,17 @@ class Table extends Component {
 
 Table.propTypes = ({
   gastos: PropTypes.arrayOf(Object).isRequired,
+  editExpenseHability: PropTypes.func.isRequired,
+  expenses: PropTypes.func.isRequired,
 });
 
 const mapStateToProps = (state) => ({
   gastos: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  expenses: (param) => dispatch(expensesActionProp(param)),
+  editExpenseHability: (param1, param2) => dispatch(handleBtnDelete(param1, param2)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

@@ -2,7 +2,7 @@
 
 import { CURRENCY_TYPE_ACTION,
   EXPENSES_TYPE,
-  TOTAL_EXPENSE_TYPE } from '../actions';
+  TOTAL_EXPENSE_TYPE, EDIT_EXPENSE_ARRAY } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   total: 0,
   expenses: [],
   currenciesDetails: [],
+  editArrayExpenses: false,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -31,6 +32,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       total: action.total,
+    };
+  case EDIT_EXPENSE_ARRAY:
+    return {
+      ...state,
+      editArrayExpenses: action.editExpensesArray,
+      editTotal: action.total,
     };
   default:
     return state;

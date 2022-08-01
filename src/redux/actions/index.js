@@ -8,6 +8,7 @@ export const EXPENSES_TYPE = 'EXPENSES_TYPE';
 export const EXCHANGE_TYPE_ACTION = 'EXCHANGE_TYPE_ACTION';
 export const EXCHANGE_TYPE_ACTION_ERROR = 'EXCHANGE_TYPE_ACTION_ERROR';
 export const TOTAL_EXPENSE_TYPE = 'TOTAL_EXPENSE_TYPE';
+export const EDIT_EXPENSE_ARRAY = 'EDIT_EXPENSE_ARRAY';
 
 export const loginAction = (email, password) => ({ type: LOGIN, email, password });
 
@@ -28,6 +29,12 @@ export const expensesAc = (expenses) => ({
 
 export const getTotalExpense = (total) => ({
   type: TOTAL_EXPENSE_TYPE,
+  total,
+});
+
+export const handleBtnDelete = (editExpensesArray, total) => ({
+  type: EDIT_EXPENSE_ARRAY,
+  editExpensesArray,
   total,
 });
 
