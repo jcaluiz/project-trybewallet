@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getTotalExpense, expensesAc as expensesActionProp,
-  getCurrencyAPIThunk } from '../redux/actions';
+  getCurrencyAPIThunk, habilityEditToRedux } from '../redux/actions';
+import HeaderWallet from './HeaderWallet';
 
 class WalletForm extends Component {
   constructor() {
@@ -24,15 +25,19 @@ class WalletForm extends Component {
       sumTotalHability: false,
       totalExpenseCalculator: 0,
       totalHability: false,
+      habilityEditChangeState: false,
+      habilityFromBtn: false,
     };
   }
 
   componentDidUpdate() {
     const {
-      exchangeValueHability, multiplicationWithExchange,
-      sumTotalHability, totalHability, expenses, total } = this.state;
+      exchangeValueHability, multiplicationWithExchange, habilityFromBtn, total,
+      sumTotalHability, totalHability, expenses, habilityEditChangeState } = this.state;
     const { expensesAction, getCurrencyAPIThunkReq,
-      editExpenseHability, editTotal } = this.props;
+      editExpenseHability, editTotal, gastoRedux, editHability,
+      numberForLess, totalOfRedux, totalExpense } = this.props;
+    console.log(totalOfRedux);
     if (editTotal !== undefined) {
       this.handleEditTotalState(total.filter((e) => e !== Number(editTotal)));
     }
@@ -47,6 +52,38 @@ class WalletForm extends Component {
       this.handleGetPropsTotal();
       expensesAction(expenses);
     }
+    if (editHability && !habilityFromBtn && !habilityEditChangeState) {
+      this.handleInputEditExpense(gastoRedux);
+      expensesAction(expenses.filter((expense) => expense.id !== gastoRedux.id));
+      totalExpense((totalOfRedux - numberForLess).toFixed(2));
+      this.calculateTotal(numberForLess);
+    }
+  }
+
+  calculateTotal = (valueProperty) => {
+    const { total } = this.state;
+    this.setState({ total: total.filter((e) => e !== Number(valueProperty)) });
+  }
+
+  habilityEditChange = () => {
+    const { editHability } = this.props;
+    return (editHability) && this.setState((prevState) => ({
+      habilityEditChangeState: !prevState.habilityEditChangeState }));
+  }
+
+  handleInputEditExpense = (param) => {
+    const { total } = this.state;
+    this.setState((prevState) => ({
+      id: param.id,
+      value: param.value,
+      currency: param.currency,
+      method: param.method,
+      tag: param.tag,
+      description: param.description,
+      exchangeRates: param.exchangeRates,
+      habilityEditChangeState: !prevState.habilityEditChangeState,
+      total: total.filter((_number, index) => index !== param.id),
+    }));
   }
 
   handleEditTotalState = (valueProperty) => {
@@ -95,13 +132,16 @@ class WalletForm extends Component {
     this.setState({ totalHability: false });
   }
 
-  handleChange = ({ target: { name, value } }) => this.setState({ [name]: value });
+  handleChange = ({ target: { name, value } }) => {
+    const { habilityEditFromRedux, editHability } = this.props;
+    this.setState({ [name]: value });
+    return (editHability === true) && habilityEditFromRedux(editHability, name, value);
+  }
 
   handleClick = () => {
     const { value, description, currency, method, tag, id } = this.state;
     this.handleDeleteExpense();
-
-    const { exchangeRatesAction } = this.props;
+    const { exchangeRatesAction, editHability } = this.props;
     this.setState((prevState) => ({
       expenses: [...prevState.expenses, {
         id,
@@ -116,97 +156,30 @@ class WalletForm extends Component {
       value: '',
       description: '' }));
     this.setState({ exchangeValueHability: true });
+    return editHability ? (this.setState(({ habilityFromBtn: true }))) : (
+      this.setState(({ habilityFromBtn: false }))
+    );
   }
 
   render() {
-    const { currencyList } = this.props;
+    const { currencyList, editHability } = this.props;
     const {
-      value, description, currency, method, tag, exchangeRates,
+      value, description, currency, method, tag, exchangeRates, habilityFromBtn,
     } = this.state;
     console.log(exchangeRates);
     return (
-      <form>
-        <label htmlFor="value-input">
-          Valor:
-          {' '}
-          <input
-            name="value"
-            type="number"
-            data-testid="value-input"
-            id="value-input"
-            value={ value }
-            onChange={ (event) => this.handleChange(event) }
-          />
-        </label>
-        <label htmlFor="description-input">
-          Descrição:
-          {' '}
-          <textarea
-            name="description"
-            data-testid="description-input"
-            id="description-input"
-            value={ description }
-            onChange={ (event) => this.handleChange(event) }
-          />
-        </label>
-        <label htmlFor="currency-input">
-          Moeda:
-          {' '}
-          <select
-            name="currency"
-            data-testid="currency-input"
-            id="currency-input"
-            value={ currency }
-            onChange={ (event) => this.handleChange(event) }
-          >
-            {
-              currencyList
-                .map((currencyL, index) => (
-                  <option key={ index }>{currencyL}</option>
-                ))
-            }
-          </select>
-        </label>
-        <label htmlFor="method-input">
-          Método de Pagamento:
-          {' '}
-          <select
-            name="method"
-            data-testid="method-input"
-            id="method-input"
-            value={ method }
-            onChange={ (event) => this.handleChange(event) }
-          >
-            <option>Dinheiro</option>
-            <option>Cartão de crédito</option>
-            <option>Cartão de débito</option>
-          </select>
-        </label>
-
-        <label htmlFor="tag-input">
-          Categoria:
-          {' '}
-          <select
-            name="tag"
-            data-testid="tag-input"
-            id="tag-input"
-            value={ tag }
-            onChange={ (event) => this.handleChange(event) }
-          >
-            <option>Alimentação</option>
-            <option>Lazer</option>
-            <option>Trabalho</option>
-            <option>Transporte</option>
-            <option>Saúde</option>
-          </select>
-        </label>
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
-      </form>
+      <HeaderWallet
+        value={ value }
+        description={ description }
+        currency={ currency }
+        currencyList={ currencyList }
+        method={ method }
+        tag={ tag }
+        editHability={ editHability }
+        habilityFromBtn={ habilityFromBtn }
+        handleChange={ this.handleChange }
+        handleClick={ this.handleClick }
+      />
     );
   }
 }
@@ -221,6 +194,11 @@ WalletForm.propTypes = ({
   expensesStateRedux: PropTypes.arrayOf(PropTypes.object).isRequired,
   editTotal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   editExpenseHability: PropTypes.bool,
+  gastoRedux: PropTypes.objectOf(Array).isRequired,
+  editHability: PropTypes.bool.isRequired,
+  numberForLess: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  totalOfRedux: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  habilityEditFromRedux: PropTypes.func.isRequired,
 });
 
 WalletForm.defaultProps = ({
@@ -233,12 +211,19 @@ const mapStateToProps = (state) => ({
   expensesStateRedux: state.wallet.expenses,
   editExpenseHability: state.wallet.editArrayExpenses,
   editTotal: state.wallet.editTotal,
+  editHability: state.wallet.editHability,
+  gastoRedux: state.wallet.gasto,
+  numberForLess: state.wallet.numberLess,
+  totalOfRedux: state.wallet.total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   totalExpense: (total) => dispatch(getTotalExpense(total)),
   expensesAction: (state) => dispatch(expensesActionProp(state)),
   getCurrencyAPIThunkReq: () => dispatch(getCurrencyAPIThunk()),
+  habilityEditFromRedux: (editHability, name, value) => (
+    dispatch(habilityEditToRedux(editHability, name, value))
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

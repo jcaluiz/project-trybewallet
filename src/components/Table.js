@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { expensesAc as expensesActionProp, handleBtnDelete } from '../redux/actions';
+import { expensesAc as expensesActionProp, handleBtnDelete,
+  habilityEditToRedux,
+  clickGetExpense,
+  totalLess } from '../redux/actions';
 
 class Table extends Component {
   state = {
     habilityReloadExpense: false,
+    habilityEdit: false,
   }
 
   componentDidUpdate() {
-    const { editExpenseHability } = this.props;
-    const { habilityReloadExpense } = this.state;
+    const { editExpenseHability, habilityEditFromRedux } = this.props;
+    const { habilityReloadExpense, habilityEdit } = this.state;
     editExpenseHability(habilityReloadExpense);
+    habilityEditFromRedux(habilityEdit);
   }
 
   handleListExpense = (expense) => {
@@ -29,9 +34,21 @@ class Table extends Component {
     this.setState({ habilityReloadExpense: false });
   }
 
+  editListExpense = (gasto) => {
+    const { gastos } = this.props;
+    const { getExpenseClick, numberForLess } = this.props;
+    this.setState((prevState) => ({ habilityEdit: !prevState.habilityEdit }));
+    const numberOfDeleteTotalArray = gastos.map((g) => (Object
+      .values(g.exchangeRates)
+      .filter((exchange) => gasto.currency === exchange.code
+        && exchange.codein !== 'BRLT')
+      .map((e) => Number(e.ask)) * Number(gasto.value)).toFixed(2))[0];
+    numberForLess(numberOfDeleteTotalArray);
+    getExpenseClick(gasto);
+  }
+
   render() {
     const { gastos } = this.props;
-    console.log(gastos.map((gasto) => gasto.value));
     return (
       <table>
         <thead>
@@ -49,7 +66,7 @@ class Table extends Component {
           </tr>
         </thead>
 
-        {gastos.map((gasto) => (
+        {gastos.sort((a, b) => a.id - b.id).map((gasto) => (
           <tbody key={ gasto.id }>
 
             <tr>
@@ -78,6 +95,13 @@ class Table extends Component {
               <td>
                 <button
                   type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => this.editListExpense(gasto) }
+                >
+                  Editar despesa
+                </button>
+                <button
+                  type="button"
                   data-testid="delete-btn"
                   onClick={ () => this.handleListExpense(gasto) }
                 >
@@ -99,15 +123,25 @@ Table.propTypes = ({
   gastos: PropTypes.arrayOf(Object).isRequired,
   editExpenseHability: PropTypes.func.isRequired,
   expenses: PropTypes.func.isRequired,
+  habilityEditFromRedux: PropTypes.func.isRequired,
+  numberForLess: PropTypes.func.isRequired,
+  getExpenseClick: PropTypes.func.isRequired,
 });
 
 const mapStateToProps = (state) => ({
   gastos: state.wallet.expenses,
+  nameRedux: state.wallet.name,
+  valueRedux: state.wallet.value,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   expenses: (param) => dispatch(expensesActionProp(param)),
   editExpenseHability: (param1, param2) => dispatch(handleBtnDelete(param1, param2)),
+  habilityEditFromRedux: (editHability) => (
+    dispatch(habilityEditToRedux(editHability))
+  ),
+  getExpenseClick: (gasto) => dispatch(clickGetExpense(gasto)),
+  numberForLess: (number) => dispatch(totalLess(number)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

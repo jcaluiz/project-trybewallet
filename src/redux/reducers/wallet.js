@@ -2,7 +2,8 @@
 
 import { CURRENCY_TYPE_ACTION,
   EXPENSES_TYPE,
-  TOTAL_EXPENSE_TYPE, EDIT_EXPENSE_ARRAY } from '../actions';
+  TOTAL_EXPENSE_TYPE, EDIT_EXPENSE_ARRAY, HABILITY_EDIT_TO_REDUX,
+  CLICK_GET_EXPENSE_TYPE, TYPE_NUMBERLESS } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -13,6 +14,11 @@ const INITIAL_STATE = {
   expenses: [],
   currenciesDetails: [],
   editArrayExpenses: false,
+  name: '',
+  value: '',
+  editHability: false,
+  gasto: {},
+  numberLess: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -38,6 +44,23 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       editArrayExpenses: action.editExpensesArray,
       editTotal: action.total,
+    };
+  case HABILITY_EDIT_TO_REDUX:
+    return {
+      ...state,
+      editHability: action.editHability,
+      name: action.name,
+      value: action.value,
+    };
+  case CLICK_GET_EXPENSE_TYPE:
+    return {
+      ...state,
+      gasto: action.gasto,
+    };
+  case TYPE_NUMBERLESS:
+    return {
+      ...state,
+      numberLess: action.numberLess,
     };
   default:
     return state;
