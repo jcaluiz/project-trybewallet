@@ -1,13 +1,507 @@
 body {
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #7768AE;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.forms-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.forms-container h3 {
+  color: aliceblue;
+  font-size: 50px;
+  text-shadow: 1px 1px 2px #3BB273;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  padding: 60px;
+  background-color: #3BB273;
+  border-radius: 15px;
+}
+
+label {
+  font-weight: bolder;
+  color: aliceblue;
+  text-shadow: 1px 1px 2px #7768AE;
+}
+
+form button {
+  width: 100px;
+  display: flex;
+  background-color: #7768AE;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  color: aliceblue;
+  font-weight: bolder;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+#email-input {
+  border-radius: 8px;
+  height: 35px;
+  background-color: aliceblue;
+}
+
+#password-input {
+  border-radius: 8px;
+  width: 230px;
+  height: 36px;
+  background-color: aliceblue;
+}
+
+.header-forms-wallet {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.informations-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 40px;
+  background-color: #3BB273;
+  color: aliceblue;
+  text-shadow: 1px 1px 2px #7768AE;
+}
+
+tr {
+  display: flex;
+  margin-top: 20px;
+  gap: 50px;
+  padding: 10px 20px;
+  border: 7px solid #3BB273;
+  color: aliceblue;
+  text-shadow: 1px 1px 2px #3BB273;
+}
+
+td {
+  display: flex;
+  padding: 0px 10px;
+}
+
+@media (max-width: 920px) {
+  .informations-container {
+    width: 100vw;
+  }
+
+  .header-forms-wallet {
+    width: 375px;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+    align-items: center;
+  }
+
+  #method-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-forms-wallet button {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #tag-input {
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    width: 100vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 100vw;
+    font-size: 12.2px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 100vw;
+    font-size: 12.2px;
+    gap: 30px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .informations-container {
+    width: 110vw;
+  }
+
+  .header-forms-wallet {
+    width: 375px;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+    align-items: center;
+  }
+
+  #method-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-forms-wallet button {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #tag-input {
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    width: 100vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 100vw;
+    font-size: 12.2px;
+    gap: 20px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 100vw;
+    font-size: 12.2px;
+    gap: 20px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 770px) {
+  .informations-container {
+    width: 120vw;
+  }
+
+  .header-forms-wallet {
+    width: 375px;
+    margin-left: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+    align-items: center;
+  }
+
+  #method-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-forms-wallet button {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #tag-input {
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    width: 100vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 110vw;
+    font-size: 11px;
+    gap: 15px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 110vw;
+    font-size: 11px;
+    gap: 20px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .informations-container {
+    width: 110vw;
+  }
+
+  .header-forms-wallet {
+    width: 375px;
+    margin-left: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+    align-items: center;
+  }
+
+  #method-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-forms-wallet button {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #tag-input {
+    display: flex;
+    justify-content: center;
+  }
+
+  table {
+    width: 100vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 110vw;
+    font-size: auto;
+    gap: 10px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 110vw;
+    font-size: auto;
+    gap: 10px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media (max-width: 560px) {
+  .informations-container {
+    width: 130vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 130vw;
+    font-size: 12px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 130vw;
+    font-size: 10px;
+    gap: 20px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 515px) {
+  .informations-container {
+    width: 140vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 135vw;
+    font-size: 10px;
+    gap: 15px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 135vw;
+    font-size: 10px;
+    gap: 15px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 470px) {
+  .informations-container {
+    width: 135vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 135vw;
+    font-size: 10px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 135vw;
+    font-size: 10px;
+    gap: 10px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 470px) {
+  .informations-container {
+    width: 142vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 142vw;
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 142vw;
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .informations-container {
+    width: 142vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 142vw;
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 142vw;
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .informations-container {
+    width: 150vw;
+  }
+
+  thead tr {
+    display: flex;
+    width: 150vw;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  tbody tr {
+    display: flex;
+    width: 150vw;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  td button {
+    width: 60px;
+  }
+
+  #buttons-td {
+    display: flex;
+    flex-direction: column;
+  }
 }

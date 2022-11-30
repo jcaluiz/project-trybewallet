@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
+// import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
 import { getCurrencyAPIThunk } from '../redux/actions';
 import Table from '../components/Table';
@@ -16,15 +16,21 @@ class Wallet extends React.Component {
     const { email, totalExpense } = this.props;
     return (
       <>
-        <Header />
-        <p data-testid="email-field">{email}</p>
+        {/* <Header
+          email={ email }
+          totalField={ totalExpense }
+        /> */}
+        <div className="informations-container">
+          <p data-testid="email-field">{email}</p>
 
-        <p data-testid="total-field">
-          {totalExpense === 0 ? Number(totalExpense)
-            .toFixed(2) : totalExpense}
-        </p>
+          <p data-testid="total-field">
+            {totalExpense === 0 ? Number(totalExpense)
+              .toFixed(2) : totalExpense}
+          </p>
 
-        <p data-testid="header-currency-field">BRL</p>
+          <p data-testid="header-currency-field">BRL</p>
+
+        </div>
 
         <WalletForm />
 

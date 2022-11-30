@@ -7,8 +7,7 @@ export default class HeaderWallet extends React.Component {
       tag, editHability, habilityFromBtn, handleChange,
       handleClick } = this.props;
     return (
-      <form>
-        /
+      <form className="header-forms-wallet">
         {' '}
         <label htmlFor="value-input">
           Valor:

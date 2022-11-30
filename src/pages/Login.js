@@ -46,38 +46,41 @@ class Login extends React.Component {
     const { emailHabilityButton, passwordHabilityButton } = this.state;
     console.log(this.state);
     return (
-      <form>
-        <label htmlFor="email-input">
-          Email:
-          {' '}
-          <input
-            type="email"
-            data-testid="email-input"
-            id="email-input"
-            name="email"
-            onChange={ (event) => this.habilityButton(event) }
-          />
-        </label>
-        <label htmlFor="password-input">
-          Password:
-          {' '}
-          <input
-            type="password"
-            data-testid="password-input"
-            id="password-input"
-            name="password"
-            onChange={ (event) => this.habilityButton(event) }
-          />
-        </label>
-        <button
-          type="submit"
-          disabled={ !(emailHabilityButton && passwordHabilityButton) }
-          onClick={ this.handleClick }
-        >
-          Entrar
+      <div className="forms-container">
+        <h3>TrybeWallet</h3>
+        <form className="forms-content">
+          <label htmlFor="email-input">
+            Email:
+            {' '}
+            <input
+              type="email"
+              data-testid="email-input"
+              id="email-input"
+              name="email"
+              onChange={ (event) => this.habilityButton(event) }
+            />
+          </label>
+          <label htmlFor="password-input">
+            Password:
+            {' '}
+            <input
+              type="password"
+              data-testid="password-input"
+              id="password-input"
+              name="password"
+              onChange={ (event) => this.habilityButton(event) }
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={ !(emailHabilityButton && passwordHabilityButton) }
+            onClick={ this.handleClick }
+          >
+            Entrar
 
-        </button>
-      </form>
+          </button>
+        </form>
+      </div>
     );
   }
 }

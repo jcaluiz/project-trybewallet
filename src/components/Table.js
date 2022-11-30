@@ -92,7 +92,7 @@ class Table extends Component {
 
               </td>
               <td>Real</td>
-              <td>
+              <td id="buttons-td">
                 <button
                   type="button"
                   data-testid="edit-btn"
