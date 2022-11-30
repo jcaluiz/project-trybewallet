@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://jcaluiz.github.io/project-trybewallet/",
+  "main": "index.js",
   "engines": {
     "node": "16"
   },
