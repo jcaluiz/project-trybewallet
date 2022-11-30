@@ -1,5 +1,5 @@
 {
-  "name": "project-trybewallet",
+  "name": "sd-0x-project-trybewallet",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://jcaluiz.github.io/project-trybewallet/",
@@ -33,9 +33,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "publicar": "npm run build && ./node_modules/.bin/gh-pages -d build",
     "test-coverage": "react-scripts test --coverage --watchAll=false",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
-    "publicar": "npm run build && ./node_modules/.bin/gh-pages -d build"
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx"
   },
   "eslintConfig": {
     "extends": "react-app"
